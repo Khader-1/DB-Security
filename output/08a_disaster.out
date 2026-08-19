@@ -1,0 +1,34 @@
+=== BEFORE: the datafile exists ===
+-rw-r----- 1 oracle dba 10493952 Aug 19 18:14 /u01/app/oracle/oradata/XE/users.dbf
+
+=== the data that is about to become unreachable ===
+
+    EMP_ID FULL_NAME							DEPT
+---------- ------------------------------------------------------------ ------------------------------
+      1001 Khader Khudair						Security
+      1002 Sara Ahmed							Finance
+      1003 Omar Nabil							HR
+      1004 Test User							IT
+
+
+=== DISASTER: removing the datafile ===
+
+=== AFTER: the datafile is gone ===
+ls: cannot access '/u01/app/oracle/oradata/XE/users.dbf': No such file or directory
+
+=== the instance now fails on that tablespace ===
+
+System altered.
+
+select emp_id, full_name from khader.employees order by emp_id
+                                     *
+ERROR at line 1:
+ORA-01116: error in opening database file 4
+ORA-01110: data file 4: '/u01/app/oracle/oradata/XE/users.dbf'
+ORA-27041: unable to open file
+Linux-x86_64 Error: 2: No such file or directory
+Additional information: 3
+
+
+
+Disaster simulated. Now run 08_project3_disaster.rman to recover.

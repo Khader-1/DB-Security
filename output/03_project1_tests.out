@@ -1,0 +1,62 @@
+USER is "KHADER_PWD"
+
+    EMP_ID FULL_NAME							DEPT
+---------- ------------------------------------------------------------ ------------------------------
+      1001 Khader Khudair						IT
+      1002 Sara Ahmed							Finance
+      1003 Omar Nabil							HR
+
+
+1 row created.
+
+
+Commit complete.
+
+select * from khader.salaries
+                     *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+select * from khader.cards
+                     *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+
+USERNAME		       PROFILE			      AUTHENTI ACCOUNT_STATUS
+------------------------------ ------------------------------ -------- --------------------------------
+KHADER_PWD		       KHADER_PROF		      PASSWORD OPEN
+OPS$KHADER		       KHADER_PROF		      EXTERNAL OPEN
+
+
+RESOURCE_NAME			 LIMIT
+-------------------------------- ----------------------------------------
+COMPOSITE_LIMIT 		 DEFAULT
+CONNECT_TIME			 120
+CPU_PER_CALL			 DEFAULT
+CPU_PER_SESSION 		 DEFAULT
+IDLE_TIME			 15
+LOGICAL_READS_PER_CALL		 DEFAULT
+LOGICAL_READS_PER_SESSION	 100000
+PRIVATE_SGA			 DEFAULT
+SESSIONS_PER_USER		 2
+FAILED_LOGIN_ATTEMPTS		 3
+PASSWORD_GRACE_TIME		 3
+PASSWORD_LIFE_TIME		 30
+PASSWORD_LOCK_TIME		 .0416
+PASSWORD_REUSE_MAX		 5
+PASSWORD_REUSE_TIME		 30
+PASSWORD_VERIFY_FUNCTION	 VERIFY_FUNCTION_11G
+
+16 rows selected.
+
+
+GRANTEE 		       GRANTED_ROLE
+------------------------------ ------------------------------
+KHADER_PWD		       KHADER_READ_RL
+KHADER_PWD		       KHADER_WRITE_RL
+OPS$KHADER		       KHADER_READ_RL
+OPS$KHADER		       KHADER_SENSITIVE_RL
+

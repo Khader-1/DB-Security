@@ -1,0 +1,64 @@
+
+NAME				     TYPE	 VALUE
+------------------------------------ ----------- ------------------------------
+os_authent_prefix		     string	 ops$
+
+Role created.
+
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+User created.
+
+
+Grant succeeded.
+
+
+GRANTED_ROLE		       ADM DEF
+------------------------------ --- ---
+UCAS_RL 		       NO  YES
+
+
+PRIVILEGE
+----------------------------------------
+CREATE ANY TABLE
+CREATE SESSION
+UNLIMITED TABLESPACE
+
+
+GRANTED_ROLE
+------------------------------
+CONNECT
+RESOURCE
+
+
+USERNAME		       AUTHENTI ACCOUNT_STATUS
+------------------------------ -------- --------------------------------
+OPS$UCAS		       EXTERNAL OPEN
+
+
+User created.
+
+
+Grant succeeded.
+
+
+USERNAME		       AUTHENTI ACCOUNT_STATUS
+------------------------------ -------- --------------------------------
+2026			       PASSWORD OPEN
+
+
+GRANTED_ROLE
+------------------------------
+UCAS_RL
+

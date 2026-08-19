@@ -1,0 +1,49 @@
+########## SHORT EXAM - OS authentication, no Oracle password ##########
+
+SQL*Plus: Release 11.2.0.2.0 Production on Wed Aug 19 20:39:52 2026
+
+Copyright (c) 1982, 2011, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
+
+SQL> USER is "OPS$UCAS"
+SQL> 
+PROOF
+------------------------------------
+LOGGED IN WITHOUT AN ORACLE PASSWORD
+
+SQL> 
+Table created.
+
+SQL> 
+1 row created.
+
+SQL> 
+Commit complete.
+
+SQL> 
+	ID
+----------
+	 1
+
+SQL> Disconnected from Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
+
+########## VERY SHORT EXAM - user 2026 connects ##########
+
+SQL*Plus: Release 11.2.0.2.0 Production on Wed Aug 19 20:39:54 2026
+
+Copyright (c) 1982, 2011, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
+
+SQL> USER is "2026"
+SQL> 
+PROOF
+--------------------------------
+USER 2026 CONNECTED SUCCESSFULLY
+
+SQL> Disconnected from Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production

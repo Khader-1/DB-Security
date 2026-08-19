@@ -1,0 +1,41 @@
+docker exec -it oracle-11g bash -lc 'sqlplus "sys/oracle@localhost:1521/XE as sysdba"'
+show parameter audit_trail
+show parameter audit_sys_operations
+show parameter audit_file_dest
+audit select, insert, update, delete on khader.employees by access;
+audit grant, revoke by access;
+audit system grant by access;
+audit session whenever not successful;
+audit select, insert, update, delete on khader.salaries by access;
+select object_name, sel, ins, upd, del from dba_obj_audit_opts where owner = 'KHADER';
+create user secaud identified by "Secaud#2026" default tablespace users quota unlimited on users;
+create table secaud.salary_audit_log (audit_id number, action varchar2(10), action_user varchar2(30), action_time timestamp, emp_id number(6), old_salary number(10,2), new_salary number(10,2));
+create sequence secaud.seq_salary_audit start with 1 increment by 1 nocache;
+desc secaud.salary_audit_log
+grant insert on secaud.salary_audit_log to khader;
+grant select on secaud.seq_salary_audit to khader;
+create or replace trigger khader.trg_salaries_audit after insert or update or delete on khader.salaries for each row declare v_action varchar2(10); begin if inserting then v_action := 'INSERT'; elsif updating then v_action := 'UPDATE'; else v_action := 'DELETE'; end if; insert into secaud.salary_audit_log values (secaud.seq_salary_audit.nextval, v_action, user, systimestamp, nvl(:new.emp_id, :old.emp_id), :old.base_salary, :new.base_salary); end;
+/
+audit all on sys.aud$ by access;
+create or replace trigger secaud.trg_protect_salary_log before update or delete on secaud.salary_audit_log begin raise_application_error(-20999, 'Audit records are append-only and cannot be modified or deleted.'); end;
+/
+connect khader_pwd/"Khader#120191118"@localhost:1521/XE
+select emp_id, full_name from khader.employees where emp_id = 1001;
+update khader.employees set dept = 'Security' where emp_id = 1001;
+commit;
+select * from khader.salaries;
+connect sys/oracle@localhost:1521/XE as sysdba
+update khader.salaries set base_salary = 9999.99 where emp_id = 1001;
+delete from khader.salaries where emp_id = 1003;
+commit;
+col username for a12
+col action_name for a10
+col obj_name for a10
+col sql_text for a50
+select username, action_name, obj_name, sql_text from dba_audit_trail where obj_name in ('EMPLOYEES','SALARIES') order by timestamp;
+select username, action_name, returncode from dba_audit_trail where returncode <> 0 order by timestamp;
+select audit_id, action, action_user, emp_id, old_salary, new_salary from secaud.salary_audit_log order by audit_id;
+delete from secaud.salary_audit_log;
+update secaud.salary_audit_log set new_salary = 0;
+select parameter, value from v$option where parameter in ('Oracle Database Vault','Oracle Label Security');
+exit

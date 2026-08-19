@@ -1,0 +1,173 @@
+
+Recovery Manager: Release 11.2.0.2.0 - Production on Wed Aug 19 18:13:22 2026
+
+Copyright (c) 1982, 2009, Oracle and/or its affiliates.  All rights reserved.
+
+connected to target database: XE (DBID=3062123222)
+
+RMAN> # =====================================================================
+2> # PROJECT 3 - PART 2 of 3: RMAN configuration and the full backup
+3> #
+4> # Run with:   rman target /
+5> # =====================================================================
+6> 
+7> # ---------------------------------------------------------------------
+8> # 1. RMAN persistent configuration
+9> # ---------------------------------------------------------------------
+10> 
+11> # Keep two full copies of every datafile before anything becomes obsolete
+12> CONFIGURE RETENTION POLICY TO REDUNDANCY 2;
+13> 
+14> # Control file autobackup - REQUIRED by the project brief.
+15> # It makes RMAN write a copy of the control file and the spfile after
+16> # every backup and after any structural change. Without it, losing the
+17> # control file means recovery has to start from a manual copy.
+18> CONFIGURE CONTROLFILE AUTOBACKUP ON;
+19> CONFIGURE CONTROLFILE AUTOBACKUP FORMAT FOR DEVICE TYPE DISK TO '/u01/app/oracle/fast_recovery_area/autobackup_%F';
+20> 
+21> # Disk as the default device, with a readable naming pattern
+22> CONFIGURE DEFAULT DEVICE TYPE TO DISK;
+23> CONFIGURE DEVICE TYPE DISK PARALLELISM 1 BACKUP TYPE TO BACKUPSET;
+24> CONFIGURE CHANNEL DEVICE TYPE DISK FORMAT '/u01/app/oracle/fast_recovery_area/%U';
+25> 
+26> # Do not back up a block more than once if it has not changed
+27> CONFIGURE BACKUP OPTIMIZATION ON;
+28> 
+29> # Show the resulting configuration - good screenshot for the report
+30> SHOW ALL;
+31> 
+32> # ---------------------------------------------------------------------
+33> # 2. FULL BACKUP of the whole database, plus the archived redo logs.
+34> #    "PLUS ARCHIVELOG" matters: without the archived logs the datafile
+35> #    backup cannot be rolled forward to a consistent point in time.
+36> # ---------------------------------------------------------------------
+37> BACKUP DATABASE PLUS ARCHIVELOG;
+38> 
+39> # ---------------------------------------------------------------------
+40> # 3. Prove the backup exists
+41> # ---------------------------------------------------------------------
+42> LIST BACKUP SUMMARY;
+43> 
+44> REPORT SCHEMA;
+45> 
+46> EXIT;
+using target database control file instead of recovery catalog
+new RMAN configuration parameters:
+CONFIGURE RETENTION POLICY TO REDUNDANCY 2;
+new RMAN configuration parameters are successfully stored
+
+new RMAN configuration parameters:
+CONFIGURE CONTROLFILE AUTOBACKUP ON;
+new RMAN configuration parameters are successfully stored
+
+new RMAN configuration parameters:
+CONFIGURE CONTROLFILE AUTOBACKUP FORMAT FOR DEVICE TYPE DISK TO '/u01/app/oracle/fast_recovery_area/autobackup_%F';
+new RMAN configuration parameters are successfully stored
+
+new RMAN configuration parameters:
+CONFIGURE DEFAULT DEVICE TYPE TO DISK;
+new RMAN configuration parameters are successfully stored
+
+new RMAN configuration parameters:
+CONFIGURE DEVICE TYPE DISK PARALLELISM 1 BACKUP TYPE TO BACKUPSET;
+new RMAN configuration parameters are successfully stored
+
+new RMAN configuration parameters:
+CONFIGURE CHANNEL DEVICE TYPE DISK FORMAT   '/u01/app/oracle/fast_recovery_area/%U';
+new RMAN configuration parameters are successfully stored
+
+new RMAN configuration parameters:
+CONFIGURE BACKUP OPTIMIZATION ON;
+new RMAN configuration parameters are successfully stored
+
+RMAN configuration parameters for database with db_unique_name XE are:
+CONFIGURE RETENTION POLICY TO REDUNDANCY 2;
+CONFIGURE BACKUP OPTIMIZATION ON;
+CONFIGURE DEFAULT DEVICE TYPE TO DISK;
+CONFIGURE CONTROLFILE AUTOBACKUP ON;
+CONFIGURE CONTROLFILE AUTOBACKUP FORMAT FOR DEVICE TYPE DISK TO '/u01/app/oracle/fast_recovery_area/autobackup_%F';
+CONFIGURE DEVICE TYPE DISK PARALLELISM 1 BACKUP TYPE TO BACKUPSET;
+CONFIGURE DATAFILE BACKUP COPIES FOR DEVICE TYPE DISK TO 1; # default
+CONFIGURE ARCHIVELOG BACKUP COPIES FOR DEVICE TYPE DISK TO 1; # default
+CONFIGURE CHANNEL DEVICE TYPE DISK FORMAT   '/u01/app/oracle/fast_recovery_area/%U';
+CONFIGURE MAXSETSIZE TO UNLIMITED; # default
+CONFIGURE ENCRYPTION FOR DATABASE OFF; # default
+CONFIGURE ENCRYPTION ALGORITHM 'AES128'; # default
+CONFIGURE COMPRESSION ALGORITHM 'BASIC' AS OF RELEASE 'DEFAULT' OPTIMIZE FOR LOAD TRUE ; # default
+CONFIGURE ARCHIVELOG DELETION POLICY TO NONE; # default
+CONFIGURE SNAPSHOT CONTROLFILE NAME TO '/u01/app/oracle/product/11.2.0/xe/dbs/snapcf_XE.f'; # default
+
+
+Starting backup at 19-AUG-26
+current log archived
+allocated channel: ORA_DISK_1
+channel ORA_DISK_1: SID=33 device type=DISK
+channel ORA_DISK_1: starting archived log backup set
+channel ORA_DISK_1: specifying archived log(s) in backup set
+input archived log thread=1 sequence=16 RECID=1 STAMP=1241720000
+input archived log thread=1 sequence=17 RECID=2 STAMP=1241720001
+input archived log thread=1 sequence=18 RECID=3 STAMP=1241720028
+channel ORA_DISK_1: starting piece 1 at 19-AUG-26
+channel ORA_DISK_1: finished piece 1 at 19-AUG-26
+piece handle=/u01/app/oracle/fast_recovery_area/0150696u_1_1 tag=TAG20260819T181350 comment=NONE
+channel ORA_DISK_1: backup set complete, elapsed time: 00:00:01
+Finished backup at 19-AUG-26
+
+Starting backup at 19-AUG-26
+using channel ORA_DISK_1
+channel ORA_DISK_1: starting full datafile backup set
+channel ORA_DISK_1: specifying datafile(s) in backup set
+input datafile file number=00002 name=/u01/app/oracle/oradata/XE/sysaux.dbf
+input datafile file number=00001 name=/u01/app/oracle/oradata/XE/system.dbf
+input datafile file number=00003 name=/u01/app/oracle/oradata/XE/undotbs1.dbf
+input datafile file number=00004 name=/u01/app/oracle/oradata/XE/users.dbf
+channel ORA_DISK_1: starting piece 1 at 19-AUG-26
+channel ORA_DISK_1: finished piece 1 at 19-AUG-26
+piece handle=/u01/app/oracle/fast_recovery_area/02506971_1_1 tag=TAG20260819T181352 comment=NONE
+channel ORA_DISK_1: backup set complete, elapsed time: 00:00:15
+Finished backup at 19-AUG-26
+
+Starting backup at 19-AUG-26
+current log archived
+using channel ORA_DISK_1
+channel ORA_DISK_1: starting archived log backup set
+channel ORA_DISK_1: specifying archived log(s) in backup set
+input archived log thread=1 sequence=19 RECID=4 STAMP=1241720048
+channel ORA_DISK_1: starting piece 1 at 19-AUG-26
+channel ORA_DISK_1: finished piece 1 at 19-AUG-26
+piece handle=/u01/app/oracle/fast_recovery_area/0350697h_1_1 tag=TAG20260819T181409 comment=NONE
+channel ORA_DISK_1: backup set complete, elapsed time: 00:00:01
+Finished backup at 19-AUG-26
+
+Starting Control File and SPFILE Autobackup at 19-AUG-26
+piece handle=/u01/app/oracle/fast_recovery_area/autobackup_c-3062123222-20260819-00 comment=NONE
+Finished Control File and SPFILE Autobackup at 19-AUG-26
+
+
+List of Backups
+===============
+Key     TY LV S Device Type Completion Time #Pieces #Copies Compressed Tag
+------- -- -- - ----------- --------------- ------- ------- ---------- ---
+1       B  A  A DISK        19-AUG-26       1       1       NO         TAG20260819T181350
+2       B  F  A DISK        19-AUG-26       1       1       NO         TAG20260819T181352
+3       B  A  A DISK        19-AUG-26       1       1       NO         TAG20260819T181409
+4       B  F  A DISK        19-AUG-26       1       1       NO         TAG20260819T181411
+
+Report of database schema for database with db_unique_name XE
+
+List of Permanent Datafiles
+===========================
+File Size(MB) Tablespace           RB segs Datafile Name
+---- -------- -------------------- ------- ------------------------
+1    353      SYSTEM               ***     /u01/app/oracle/oradata/XE/system.dbf
+2    610      SYSAUX               ***     /u01/app/oracle/oradata/XE/sysaux.dbf
+3    21       UNDOTBS1             ***     /u01/app/oracle/oradata/XE/undotbs1.dbf
+4    10       USERS                ***     /u01/app/oracle/oradata/XE/users.dbf
+
+List of Temporary Files
+=======================
+File Size(MB) Tablespace           Maxsize(MB) Tempfile Name
+---- -------- -------------------- ----------- --------------------
+1    1        TEMP                 32767       /u01/app/oracle/oradata/XE/temp.dbf
+
+Recovery Manager complete.

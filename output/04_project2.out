@@ -1,0 +1,57 @@
+
+NAME				     TYPE	 VALUE
+------------------------------------ ----------- ------------------------------
+audit_trail			     string	 DB_EXTENDED
+
+Audit succeeded.
+
+
+Audit succeeded.
+
+audit grant, revoke by access
+             *
+ERROR at line 1:
+ORA-00956: missing or invalid auditing option
+
+
+
+Audit succeeded.
+
+
+User created.
+
+
+Grant succeeded.
+
+
+Table created.
+
+
+Sequence created.
+
+
+Grant succeeded.
+
+
+Grant succeeded.
+
+
+Warning: Trigger created with compilation errors.
+
+
+Audit succeeded.
+
+
+Audit succeeded.
+
+
+NAME				     TYPE	 VALUE
+------------------------------------ ----------- ------------------------------
+audit_file_dest 		     string	 /u01/app/oracle/admin/XE/adump
+
+NAME				     TYPE	 VALUE
+------------------------------------ ----------- ------------------------------
+audit_sys_operations		     boolean	 TRUE
+
+Trigger created.
+

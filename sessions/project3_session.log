@@ -1,0 +1,38 @@
+docker exec -it oracle-11g bash -lc 'sqlplus "sys/oracle@localhost:1521/XE as sysdba"'
+select log_mode from v$database;
+show parameter db_recovery_file_dest
+archive log list
+alter system switch logfile;
+alter system archive log current;
+col name for a72
+select sequence#, name, status from v$archived_log where rownum <= 5 order by sequence#;
+desc khader.employees
+select emp_id, full_name, dept from khader.employees order by emp_id;
+select file#, name, status from v$datafile order by file#;
+exit
+docker exec -it oracle-11g bash -lc 'export ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe; export ORACLE_SID=XE; export PATH=$ORACLE_HOME/bin:$PATH; rman target /'
+SHOW ALL;
+CONFIGURE CONTROLFILE AUTOBACKUP ON;
+CONFIGURE RETENTION POLICY TO REDUNDANCY 2;
+REPORT SCHEMA;
+BACKUP DATABASE PLUS ARCHIVELOG;
+LIST BACKUP SUMMARY;
+EXIT;
+docker exec oracle-11g bash -lc 'ls -la /u01/app/oracle/oradata/XE/users.dbf'
+docker exec -u root oracle-11g bash -lc 'rm -f /u01/app/oracle/oradata/XE/users.dbf'
+docker exec oracle-11g bash -lc 'ls -la /u01/app/oracle/oradata/XE/users.dbf'
+docker exec -it oracle-11g bash -lc 'sqlplus "sys/oracle@localhost:1521/XE as sysdba"'
+alter system flush buffer_cache;
+select emp_id, full_name from khader.employees order by emp_id;
+exit
+docker exec -it oracle-11g bash -lc 'export ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe; export ORACLE_SID=XE; export PATH=$ORACLE_HOME/bin:$PATH; rman target /'
+SQL "ALTER DATABASE DATAFILE 4 OFFLINE";
+RESTORE DATAFILE 4;
+RECOVER DATAFILE 4;
+SQL "ALTER DATABASE DATAFILE 4 ONLINE";
+EXIT;
+docker exec -it oracle-11g bash -lc 'sqlplus "sys/oracle@localhost:1521/XE as sysdba"'
+select emp_id, full_name, dept from khader.employees order by emp_id;
+select file#, name, status from v$datafile order by file#;
+select log_mode from v$database;
+exit

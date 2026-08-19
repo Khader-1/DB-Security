@@ -1,0 +1,53 @@
+docker exec -it oracle-11g bash -lc 'sqlplus "sys/oracle@localhost:1521/XE as sysdba"'
+select banner from v$version where rownum = 1;
+show parameter resource_limit
+create user khader identified by "Khader#2026" default tablespace users quota unlimited on users;
+grant create session, create table to khader;
+create table khader.employees (emp_id number(6) primary key, full_name varchar2(60), dept varchar2(30));
+create table khader.salaries (emp_id number(6) primary key, base_salary number(10,2), bonus number(10,2));
+create table khader.cards (card_id number(6) primary key, emp_id number(6), card_no varchar2(19));
+desc khader.employe
+desc khader.employees
+desc khader.salaries
+insert into khader.employees values (1001, 'Khader Khudair', 'IT');
+insert into khader.employees values (1002, 'Sara Ahmed', 'Finance');
+insert into khader.employees values (1003, 'Omar Nabil', 'HR');
+insert into khader.salaries values (1001, 4500, 500);
+insert into khader.salaries values (1002, 5200, 750);
+insert into khader.cards values (1, 1001, '4111-1111-1111-1111');
+commit;
+select emp_id, full_name, dept from khader.employees order by emp_id;
+create profile khader_prof limit failed_login_attempts 3 password_lock_time 1/24 password_life_time 30 password_verify_function verify_function_11g sessions_per_user 2 idle_time 15;
+select resource_name, limit from dba_profiles where profile = 'KHADER_PROF' and resource_type = 'PASSWORD';
+create role khader_read_rl;
+create role khader_write_rl;
+create role khader_sensitive_rl;
+grant create session to khader_read_rl;
+grant select on khader.employees to khader_read_rl;
+grant insert, update, delete on khader.employees to khader_write_rl;
+grant select on khader.salaries to khader_sensitive_rl;
+grant select on khader.cards to khader_sensitive_rl;
+create user khader_pwd identified by 120191118 profile khader_prof;
+create user khader_pwd identified by "Khader#120191118" default tablespace users quota 5m on users profile khader_prof;
+show parameter os_authent_prefix
+create user ops$khader identified externally default tablespace users quota 5m on users profile khader_prof;
+grant khader_read_rl, khader_write_rl to khader_pwd;
+grant khader_read_rl, khader_sensitive_rl to ops$khader;
+select username, authentication_type, profile from dba_users where username in ('KHADER_PWD','OPS$KHADER');
+select grantee, granted_role from dba_role_privs where grantee in ('KHADER_PWD','OPS$KHADER') order by grantee;
+connect khader_pwd/"Khader#120191118"@localhost:1521/XE
+show user
+desc khader.employees
+select emp_id, full_name, dept from khader.employees order by emp_id;
+insert into khader.employees values (1004, 'Test User', 'IT');
+commit;
+desc khader.salaries
+select * from khader.salaries;
+select * from khader.cards;
+connect sys/oracle@localhost:1521/XE as sysdba
+exit
+docker exec -u khader -it oracle-11g bash -lc 'export ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe; export ORACLE_SID=XE; export PATH=$ORACLE_HOME/bin:$PATH; sqlplus /'
+show user
+desc khader.salaries
+select emp_id, base_salary from khader.salaries order by emp_id;
+exit

@@ -1,0 +1,100 @@
+
+Recovery Manager: Release 11.2.0.2.0 - Production on Wed Aug 19 18:14:22 2026
+
+Copyright (c) 1982, 2009, Oracle and/or its affiliates.  All rights reserved.
+
+connected to target database: XE (DBID=3062123222)
+
+RMAN> # =====================================================================
+2> # PROJECT 3 - PART 3 of 3: the disaster and the recovery
+3> #
+4> # Scenario: the datafile of the USERS tablespace is lost. That tablespace
+5> # holds the KHADER schema, so this is a realistic "we lost the business
+6> # data" event rather than a toy example. SYSTEM is deliberately NOT the
+7> # victim, because losing SYSTEM takes the whole instance down and makes a
+8> # much longer demonstration.
+9> #
+10> # The file is deleted at the OS level in 08_project3_disaster.sh, which
+11> # is the actual "disaster". This file is the RECOVERY.
+12> #
+13> # Run with:   rman target /
+14> # =====================================================================
+15> 
+16> # ---------------------------------------------------------------------
+17> # 1. Confirm the damage. The datafile is gone from disk, so the instance
+18> #    cannot open the file and reports it as needing recovery.
+19> # ---------------------------------------------------------------------
+20> SQL "ALTER SESSION SET nls_date_format = ''DD-MON-YYYY HH24:MI:SS''";
+21> 
+22> REPORT SCHEMA;
+23> 
+24> # ---------------------------------------------------------------------
+25> # 2. Take the damaged datafile offline so the rest of the database can
+26> #    keep running while we repair it.
+27> # ---------------------------------------------------------------------
+28> SQL "ALTER DATABASE DATAFILE 4 OFFLINE";
+29> 
+30> # ---------------------------------------------------------------------
+31> # 3. RESTORE - copy the datafile back out of the backup set.
+32> # ---------------------------------------------------------------------
+33> RESTORE DATAFILE 4;
+34> 
+35> # ---------------------------------------------------------------------
+36> # 4. RECOVER - apply the archived redo logs written since that backup,
+37> #    so the restored file catches up with the rest of the database.
+38> #    This is the step that ARCHIVELOG mode exists for.
+39> # ---------------------------------------------------------------------
+40> RECOVER DATAFILE 4;
+41> 
+42> # ---------------------------------------------------------------------
+43> # 5. Bring it back online
+44> # ---------------------------------------------------------------------
+45> SQL "ALTER DATABASE DATAFILE 4 ONLINE";
+46> 
+47> EXIT;
+using target database control file instead of recovery catalog
+sql statement: ALTER SESSION SET nls_date_format = ''DD-MON-YYYY HH24:MI:SS''
+
+Report of database schema for database with db_unique_name XE
+
+List of Permanent Datafiles
+===========================
+File Size(MB) Tablespace           RB segs Datafile Name
+---- -------- -------------------- ------- ------------------------
+1    353      SYSTEM               ***     /u01/app/oracle/oradata/XE/system.dbf
+2    610      SYSAUX               ***     /u01/app/oracle/oradata/XE/sysaux.dbf
+3    21       UNDOTBS1             ***     /u01/app/oracle/oradata/XE/undotbs1.dbf
+4    0        USERS                ***     /u01/app/oracle/oradata/XE/users.dbf
+
+List of Temporary Files
+=======================
+File Size(MB) Tablespace           Maxsize(MB) Tempfile Name
+---- -------- -------------------- ----------- --------------------
+1    1        TEMP                 32767       /u01/app/oracle/oradata/XE/temp.dbf
+
+sql statement: ALTER DATABASE DATAFILE 4 OFFLINE
+
+Starting restore at 19-AUG-26
+allocated channel: ORA_DISK_1
+channel ORA_DISK_1: SID=36 device type=DISK
+
+channel ORA_DISK_1: starting datafile backup set restore
+channel ORA_DISK_1: specifying datafile(s) to restore from backup set
+channel ORA_DISK_1: restoring datafile 00004 to /u01/app/oracle/oradata/XE/users.dbf
+channel ORA_DISK_1: reading from backup piece /u01/app/oracle/fast_recovery_area/02506971_1_1
+channel ORA_DISK_1: piece handle=/u01/app/oracle/fast_recovery_area/02506971_1_1 tag=TAG20260819T181352
+channel ORA_DISK_1: restored backup piece 1
+channel ORA_DISK_1: restore complete, elapsed time: 00:00:01
+Finished restore at 19-AUG-26
+
+Starting recover at 19-AUG-26
+using channel ORA_DISK_1
+
+starting media recovery
+media recovery complete, elapsed time: 00:00:01
+
+Finished recover at 19-AUG-26
+
+sql statement: ALTER DATABASE DATAFILE 4 ONLINE
+
+Recovery Manager complete.

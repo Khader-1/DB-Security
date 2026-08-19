@@ -1,0 +1,74 @@
+
+System altered.
+
+
+System altered.
+
+
+NAME				     TYPE	 VALUE
+------------------------------------ ----------- ------------------------------
+db_recovery_file_dest		     string	 /u01/app/oracle/fast_recovery_
+						 area
+db_recovery_file_dest_size	     big integer 3G
+
+LOG_MODE
+------------
+NOARCHIVELOG
+
+Database closed.
+Database dismounted.
+ORACLE instance shut down.
+ORACLE instance started.
+
+Total System Global Area  801701888 bytes
+Fixed Size		    2230776 bytes
+Variable Size		  222299656 bytes
+Database Buffers	  574619648 bytes
+Redo Buffers		    2551808 bytes
+Database mounted.
+
+Database altered.
+
+
+Database altered.
+
+
+LOG_MODE
+------------
+ARCHIVELOG
+
+Database log mode	       Archive Mode
+Automatic archival	       Enabled
+Archive destination	       USE_DB_RECOVERY_FILE_DEST
+Oldest online log sequence     15
+Next log sequence to archive   16
+Current log sequence	       16
+
+System altered.
+
+
+System altered.
+
+
+ SEQUENCE#
+----------
+NAME
+--------------------------------------------------------------------------------------------------------------------------------------------
+S
+-
+	16
+/u01/app/oracle/fast_recovery_area/XE/archivelog/2026_08_19/o1_mf_1_16_o8cwl04w_.arc
+A
+
+	17
+/u01/app/oracle/fast_recovery_area/XE/archivelog/2026_08_19/o1_mf_1_17_o8cwl101_.arc
+A
+
+ SEQUENCE#
+----------
+NAME
+--------------------------------------------------------------------------------------------------------------------------------------------
+S
+-
+
+

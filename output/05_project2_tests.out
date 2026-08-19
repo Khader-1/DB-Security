@@ -1,0 +1,78 @@
+
+    EMP_ID FULL_NAME
+---------- ------------------------------------------------------------
+      1001 Khader Khudair
+
+
+1 row updated.
+
+
+Commit complete.
+
+select * from khader.salaries
+                     *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+
+1 row updated.
+
+
+1 row deleted.
+
+
+Commit complete.
+
+
+USERNAME     ACTION_NAM OBJ_NAME     SQL_TEXT						      TIMESTAMP
+------------ ---------- ------------ -------------------------------------------------------- ------------------
+KHADER_PWD   SELECT	EMPLOYEES    select emp_id, full_name, dept from khader.employees ord 19-AUG-26
+				     er by emp_id
+
+KHADER_PWD   INSERT	EMPLOYEES    insert into khader.employees values (1004, 'Test User',  19-AUG-26
+				     'IT', 'test@ucas.edu.ps')
+
+KHADER_PWD   SELECT	SALARIES     select * from khader.salaries			      19-AUG-26
+KHADER_PWD   SELECT	EMPLOYEES    select emp_id, full_name from khader.employees where emp 19-AUG-26
+				     _id = 1001
+
+KHADER_PWD   UPDATE	EMPLOYEES    update khader.employees set dept = 'Security' where emp_ 19-AUG-26
+				     id = 1001
+
+KHADER_PWD   SELECT	SALARIES     select * from khader.salaries			      19-AUG-26
+
+6 rows selected.
+
+
+USERNAME     ACTION_NAM RETURNCODE TIMESTAMP
+------------ ---------- ---------- ------------------
+KHADER_PWD   SELECT	      2004 19-AUG-26
+KHADER_PWD   SELECT	      2004 19-AUG-26
+
+
+  AUDIT_ID ACTION   ACTION_USER      EMP_ID OLD_SALARY NEW_SALARY ACTION_TIME
+---------- -------- ------------ ---------- ---------- ---------- ---------------------------------------------------------------------------
+	 1 UPDATE   SYS 	       1001	  4500	  9999.99 19-AUG-26 05.54.33.478990 PM
+	 2 DELETE   SYS 	       1003	  3900		  19-AUG-26 05.54.33.504629 PM
+
+delete from secaud.salary_audit_log
+                   *
+ERROR at line 1:
+ORA-20999: Audit records are append-only and cannot be modified or deleted.
+ORA-06512: at "SECAUD.TRG_PROTECT_SALARY_LOG", line 2
+ORA-04088: error during execution of trigger 'SECAUD.TRG_PROTECT_SALARY_LOG'
+
+
+update secaud.salary_audit_log set new_salary = 0
+              *
+ERROR at line 1:
+ORA-20999: Audit records are append-only and cannot be modified or deleted.
+ORA-06512: at "SECAUD.TRG_PROTECT_SALARY_LOG", line 2
+ORA-04088: error during execution of trigger 'SECAUD.TRG_PROTECT_SALARY_LOG'
+
+
+
+NAME				     TYPE	 VALUE
+------------------------------------ ----------- ------------------------------
+audit_file_dest 		     string	 /u01/app/oracle/admin/XE/adump

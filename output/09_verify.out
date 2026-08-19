@@ -1,0 +1,42 @@
+
+STATUS
+---------
+RECOVERED
+
+
+    EMP_ID FULL_NAME							DEPT
+---------- ------------------------------------------------------------ ------------------------------
+      1001 Khader Khudair						Security
+      1002 Sara Ahmed							Finance
+      1003 Omar Nabil							HR
+      1004 Test User							IT
+
+
+     FILE#
+----------
+NAME
+----------------------------------------------------------------------------------------------------------------------------------
+STATUS
+-------
+	 1
+/u01/app/oracle/oradata/XE/system.dbf
+SYSTEM
+
+	 2
+/u01/app/oracle/oradata/XE/sysaux.dbf
+ONLINE
+
+	 3
+/u01/app/oracle/oradata/XE/undotbs1.dbf
+ONLINE
+
+	 4
+/u01/app/oracle/oradata/XE/users.dbf
+ONLINE
+
+
+
+LOG_MODE
+------------
+ARCHIVELOG
+

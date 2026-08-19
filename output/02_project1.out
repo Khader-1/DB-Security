@@ -1,0 +1,57 @@
+
+Profile created.
+
+grant create session			   to dbsec_read_rl
+                                              *
+ERROR at line 1:
+ORA-01917: user or role 'DBSEC_READ_RL' does not exist
+
+
+grant select on appown.employees	   to dbsec_read_rl
+                       *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+grant insert, update, delete on appown.employees to dbsec_write_rl
+                                       *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+grant select on appown.salaries 	   to dbsec_sensitive_rl
+                       *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+grant select on appown.cards		   to dbsec_sensitive_rl
+                       *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+
+User created.
+
+grant dbsec_read_rl  to dbsec_pwd
+      *
+ERROR at line 1:
+ORA-01919: role 'DBSEC_READ_RL' does not exist
+
+
+grant dbsec_write_rl to dbsec_pwd
+      *
+ERROR at line 1:
+ORA-01919: role 'DBSEC_WRITE_RL' does not exist
+
+
+
+User created.
+
+grant dbsec_read_rl	 to ops$dbsec_os
+      *
+ERROR at line 1:
+ORA-01919: role 'DBSEC_READ_RL' does not exist
+
+
